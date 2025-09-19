@@ -3,7 +3,7 @@
     <div class="nav-left">
       <router-link to="/">首页</router-link>
       <router-link to="/market">市场</router-link>
-      <router-link v-if="isLoggedIn" to="/mint">铸造</router-link>
+      <router-link v-if="isLoggedIn" to="/mine">副本</router-link>
     </div>
   </nav>
 </template>

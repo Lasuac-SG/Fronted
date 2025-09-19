@@ -445,7 +445,7 @@ export default {
   display: flex;
   height: 85vh;
   gap: 1rem;
-  padding: 2rem 6rem;
+  padding: clamp(1rem, 2vw, 6rem);
   align-self: stretch
 }
 .profile-panel {
@@ -827,5 +827,23 @@ export default {
   }
 }
 
+
+body, html {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background: #000; /* 外部黑边 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-wrapper {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-height: 100%;
+  background: #fff; /* 你的网页内容区域 */
+  overflow: hidden;
+}
 
 </style>

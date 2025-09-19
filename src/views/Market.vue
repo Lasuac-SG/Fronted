@@ -95,7 +95,7 @@
             <img :src="newCard.avatar" alt="new card" class="scratch-card-img" />
           </ScratchCard>
 
-          <CardModal
+          <CardModal_empty
             v-model="showCardModal"
             :card="newCard"
             :showActions="true"
@@ -119,11 +119,13 @@
 import { request } from "../api/request";
 import { getProfile } from "../api/auth";
 import CardModal from "../components/CardModal_sale.vue";
+import CardModal_empty from "../components/CardModal_empty.vue";
+
 import ScratchCard from "../components/ScratchToReveal.vue";
 import BalanceSlider from "../components/BalanceSlider.vue"; // 假设你的滑动条组件路径
 
 export default {
-  components: { CardModal, ScratchCard, BalanceSlider },
+  components: { CardModal, ScratchCard, BalanceSlider, CardModal_empty },
   data() {
     return {
       // 市场数据
@@ -430,6 +432,25 @@ button.learn-more:active::before {
   align-items: center;
   justify-content: center;
 }
+
+body, html {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background: #000; /* 外部黑边 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-wrapper {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-height: 100%;
+  background: #fff; /* 你的网页内容区域 */
+  overflow: hidden;
+}
+
 
 
 </style>
