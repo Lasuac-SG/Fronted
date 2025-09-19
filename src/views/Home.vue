@@ -203,22 +203,6 @@
       </svg>
 
 
-        <!-- 挖矿卡槽 -->
-        <div
-          class="mining-slot"
-          @dragover.prevent
-          @drop="onDropCard"
-          :class="{ 'has-card': miningCard }"
-        >
-          <template v-if="miningCard">
-            <img :src="miningCard.avatar" class="slot-card" />
-            <div class="card-name">{{ miningCard.name }}</div>
-            <button class="clear-btn" @click.stop="clearMiningCard">移除</button>
-          </template>
-          <template v-else>
-            <span>拖拽卡牌到这里进行挖矿</span>
-          </template>
-        </div>
       </div>
     </aside>
 

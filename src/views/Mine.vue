@@ -25,6 +25,7 @@
         :title="`副本 ${index + 1}`"
         :bg="bg"
         :cards-pool="myCards"
+        :difficulty="index === 0 ? 'simple' : index === 1 ? 'common' : 'hard'"
       />
     </main>
   </div>
@@ -34,6 +35,7 @@
 <script>
 import { request } from "../api/request";
 import DungeonRowCard from "../components/DungeonRowCard.vue";
+import { getProfile } from "../api/auth";
 
 import PicEasy from "../assets/Pic_easy.jpg";
 import PicNorm from "../assets/Pic_norm.jpg";
@@ -56,6 +58,7 @@ export default {
       try {
         const res = await request("/auth/card/query", { method: "POST" });
         if (res.code === 200) {
+          // res.data = res.data.filter((c) => c.owner === this.user.name);
           this.myCards = res.data.filter((c) => !c.destroy && !c.onsale);
         }
       } catch (err) {
@@ -86,6 +89,8 @@ export default {
   border-radius: 8px;
   padding: 1rem;
   overflow-y: auto;
+  margin-top: 2rem; /* ✅ 增加顶部距离 */
+
 }
 .cards-collection h3 {
   margin-bottom: 1rem;
@@ -132,9 +137,9 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 4.5rem;
   overflow-y: auto;
-  margin-top: 5rem;
+  margin-top: 2.3rem;
 
 }
 .dungeon-row {

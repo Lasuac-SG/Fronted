@@ -33,12 +33,15 @@
 
 
 <script>
+import { request } from "../api/request";
+
 export default {
   name: "DungeonRowCard",
   props: {
     title: String,
     bg: String,
     cardsPool: Array, // 父组件的卡牌池
+    difficulty: String, 
   },
   data() {
     return {
@@ -63,13 +66,15 @@ export default {
     }
 
     const payload = {
+      difficulty: this.difficulty,  // ✅ 新增
       a: this.slots[0].hashid,
       b: this.slots[1].hashid,
       c: this.slots[2].hashid,
+
     };
 
     try {
-      const res = await this.$root.request("/auth/user/mine", {
+      const res = await request("/auth/user/mine", {
         method: "POST",
         body: JSON.stringify(payload),
       });
