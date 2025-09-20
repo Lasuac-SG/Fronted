@@ -65,11 +65,11 @@
 
 <script setup>
 import { request } from "../api/request";
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, inject } from "vue";
 import Alert from '@/components/Alert.vue';
 const alertRef = ref(null); // 用来调用 Alert 的方法
 const emit = defineEmits(['update:modelValue','close']);
-inject: ['showAlert'];
+const showAlert = inject("showAlert"); // ✅ 这样才能拿到 provide 的方法
 // 父组件通过props传入卡牌数据和显示状态
 const props = defineProps({
   card: { type: Object, default: () => ({}) },
@@ -124,7 +124,7 @@ function getRarityColor(rarity) {
 
 async function buyCard(card) {
       if (!card.transID) {
-        this.$root.showAlert("danger", "交易ID不存在，无法购买");
+        showAlert("danger", "交易ID不存在，无法购买");
         return;
       }
       try {
@@ -133,16 +133,16 @@ async function buyCard(card) {
           body: JSON.stringify({ orderid: card.transID })
         });
         if (res.code === 200) {
-          this.showAlert("success", "购买成功");
+          showAlert("success", "购买成功");
           await this.fetchMarketCards();
           this.closeCardModal();
           window.location.reload()
         } else {
-          this.$root.showAlert("danger", res.msg || "购买失败");
+          showAlert("danger", res.msg || "购买失败");
         }
       } catch (e) {
         console.error(e);
-        this.$root.showAlert("danger", "购买失败");
+        showAlert("danger", "购买失败");
       }
     }
 
