@@ -69,7 +69,7 @@ import { ref, onMounted, watch } from "vue";
 import Alert from '@/components/Alert.vue';
 const alertRef = ref(null); // 用来调用 Alert 的方法
 const emit = defineEmits(['update:modelValue','close']);
-
+inject: ['showAlert']; // <- 新增
 // 父组件通过props传入卡牌数据和显示状态
 const props = defineProps({
   card: { type: Object, default: () => ({}) },
@@ -132,7 +132,7 @@ async function destroyCard(card) {
       body: JSON.stringify({ hashid: card.hashid })
     });
     if (res.code === 200) {
-      alert("销毁成功");
+      this.showAlert("success","销毁成功");
       window.location.reload();
     } else alert(res.msg);
   } catch (e) {
@@ -152,14 +152,14 @@ async function toggleSale(card) {
         method: "POST",
         body: JSON.stringify({ hashid: card.hashid, cost: inputPrice })
       });
-      if (res.code === 200) { card.onsale = true;alertRef.value.createAlert("success","上架chenggong"); window.location.reload(); }
+      if (res.code === 200) { card.onsale = true;this.showAlert("success","上架成功"); window.location.reload(); }
       else alert("上架失败");
     } else {
       const res = await request("/auth/card/cancel", {
         method: "POST",
         body: JSON.stringify({ orderid: card.transid })
       });
-      if (res.code === 200) { card.onsale = false; window.location.reload(); }
+      if (res.code === 200) { card.onsale = false; this.showAlert("success","下架成功"); window.location.reload(); }
       else alert("下架失败");
     }
   } catch (e) { console.error(e); alert("操作失败"); }

@@ -69,7 +69,7 @@ import { ref, onMounted, watch } from "vue";
 import Alert from '@/components/Alert.vue';
 const alertRef = ref(null); // 用来调用 Alert 的方法
 const emit = defineEmits(['update:modelValue','close']);
-
+inject: ['showAlert'];
 // 父组件通过props传入卡牌数据和显示状态
 const props = defineProps({
   card: { type: Object, default: () => ({}) },
@@ -133,7 +133,7 @@ async function buyCard(card) {
           body: JSON.stringify({ orderid: card.transID })
         });
         if (res.code === 200) {
-          this.$root.showAlert("success", "购买成功");
+          this.showAlert("success", "购买成功");
           await this.fetchMarketCards();
           this.closeCardModal();
           window.location.reload()

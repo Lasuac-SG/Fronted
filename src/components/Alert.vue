@@ -56,7 +56,7 @@ export default {
       // 自动关闭
       setTimeout(() => {
         this.alerts.shift();
-      }, 30000);
+      }, 3000);
     },
     removeAlert(index) {
       this.alerts.splice(index, 1);
