@@ -19,7 +19,6 @@
 
             <div class="cont_text_det_preparation">
               <div class="cont_title_preparation">
-                <p>Info</p>
               </div>
               <div class="cont_info_preparation">
                 <p>卡牌名称：{{ card.name }}</p>
@@ -106,7 +105,7 @@ function getRarityColor(rarity) {
     case 'common': return '#999';      // 灰色
     case 'rare': return '#1E90FF';    // 蓝色
     case 'epic': return '#8A2BE2';    // 紫色
-    case 'legend': return '#FF8C00';    // 橙色
+    case 'legendary': return '#FF8C00';    // 橙色
     default: return '#565656';       // 默认颜色
   }
 }

@@ -217,7 +217,6 @@
             v-for="card in myCards"
             :key="card.hashid"
             draggable="true"
-            @dragstart="onDragStart(card)"
             @click="openCard(card)"
           >
             <img :src="card.avatar" :alt="card.name" />
@@ -271,8 +270,6 @@ export default {
       showCardModal: false,
       selectedCard: null,
       // 挖矿卡槽
-      miningCard: null,
-      draggedCard: null,
     };
   },
   async mounted() {
@@ -326,39 +323,7 @@ export default {
       this.selectedCard = null;
     },
     
-    
-    // ----------------- 挖矿逻辑 -----------------
-    onDragStart(card) {
-      this.draggedCard = card;
-    },
-    async onDropCard() {
-      if (!this.draggedCard) return;
-      this.miningCard = this.draggedCard;
-
-      // 调用挖矿接口
-      try {
-        const res = await request("/auth/user/mine", {
-          method: "POST",
-          body: JSON.stringify({ hash_id: this.miningCard.hashid })
-        });
-        if (res.code === 200) {
-          this.$root.showAlert("success", "挖矿成功");
-          await this.fetchProfile(); // 刷新余额
-        } else {
-          this.$root.showAlert("danger", res.msg || "挖矿失败");
-          this.miningCard = null;
-        }
-      } catch (e) {
-        console.error(e);
-        this.$root.showAlert("danger", "挖矿请求失败");
-        this.miningCard = null;
-      } finally {
-        this.draggedCard = null;
-      }
-    },
-    clearMiningCard() {
-      this.miningCard = null;
-    }
+  
   }
 };
 </script>

@@ -43,6 +43,7 @@ export default {
     cardsPool: Array, // 父组件的卡牌池
     difficulty: String, 
   },
+  inject: ['showAlert'], // <- 新增
   data() {
     return {
       slots: [null, null, null], // 每行3个槽位
@@ -61,12 +62,13 @@ export default {
   },
   async onStart() {
     if (!this.slots.every(slot => slot)) {
-      this.$root.showAlert("warning", "请先填满三个卡槽");
+      this.showAlert("warning", "请先填满三个卡槽");
       return;
     }
+      console.log('Injected showAlert:', this.showAlert);
 
     const payload = {
-      difficulty: this.difficulty,  // ✅ 新增
+      difficulty: this.difficulty, 
       a: this.slots[0].hashid,
       b: this.slots[1].hashid,
       c: this.slots[2].hashid,
@@ -79,15 +81,14 @@ export default {
         body: JSON.stringify(payload),
       });
       if (res.code === 200) {
-        this.$root.showAlert("success", `${this.title} 挖矿成功`);
-        // Vue 3 直接赋值即可
+      this.showAlert("success", "挑战成功！");
         this.slots = [null, null, null];
       } else {
-        this.$root.showAlert("danger", res.msg || "挖矿失败");
+        this.showAlert("danger", res.msg || "挖矿失败");
       }
     } catch (err) {
       console.error(err);
-      this.$root.showAlert("danger", "挖矿请求失败");
+      this.showAlert("danger", "挖矿请求失败");
     }
   },
 },
@@ -162,7 +163,6 @@ export default {
   margin-top: 1rem;
 }
 
-/* 卡槽行 */
 .slot-row {
   display: flex;
   gap: 0.5rem;

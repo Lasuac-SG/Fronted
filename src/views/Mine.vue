@@ -8,7 +8,8 @@
           class="card-preview"
           v-for="card in myCards"
           :key="card.hashid"
-          draggable="true"
+          
+          @click="openCard(card)"
           @dragstart="onDragStart(card)"
         >
           <img :src="card.avatar" :alt="card.name" />
@@ -16,13 +17,19 @@
         </div>
       </div>
     </aside>
-
+    <CardModal
+      v-model="showCardModal"
+      :card="selectedCard"
+      :showActions="true"
+      
+      @close="closeCardModal"
+    />
     <!-- 右侧：挖矿副本区 -->
     <main class="dungeon-panel">
       <DungeonRowCard
         v-for="(bg, index) in bgList"
         :key="index"
-        :title="`副本 ${index + 1}`"
+        :title="`副本难度 ${index + 1}`"
         :bg="bg"
         :cards-pool="myCards"
         :difficulty="index === 0 ? 'simple' : index === 1 ? 'common' : 'hard'"
@@ -35,7 +42,7 @@
 <script>
 import { request } from "../api/request";
 import DungeonRowCard from "../components/DungeonRowCard.vue";
-import { getProfile } from "../api/auth";
+import CardModal from "../components/CardModal_empty.vue";
 
 import PicEasy from "../assets/Pic_easy.jpg";
 import PicNorm from "../assets/Pic_norm.jpg";
@@ -43,11 +50,13 @@ import PicHard from "../assets/Pic_hard.jpg";
 
 export default {
   name: "MinePage",
-  components: { DungeonRowCard },
+  components: { DungeonRowCard, CardModal },
   data() {
     return {
       myCards: [], // 卡牌池
       bgList: [PicEasy, PicNorm, PicHard],
+      showCardModal: false,
+      selectedCard: null,
     };
   },
   async mounted() {
@@ -68,6 +77,10 @@ export default {
     onDragStart(card) {
       // 可以通过全局事件或 provide/inject 传给子组件
       this.$root.draggedCard = card;
+    },
+    openCard(card) {
+      this.selectedCard = card;
+      this.showCardModal = true;
     },
   },
 };
